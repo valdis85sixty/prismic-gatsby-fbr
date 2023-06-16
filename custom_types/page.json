@@ -13,6 +13,12 @@
         "label": "uid"
       }
     },
+    "seo_description": {
+      "type": "Text",
+      "config": {
+        "label": "seo_description"
+      }
+    },
     "body": {
       "type": "Slices",
       "fieldset": "Slice zone",

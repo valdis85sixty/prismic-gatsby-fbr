@@ -11,6 +11,7 @@ module.exports = {
   siteMetadata: {
     title: 'Multi-language site',
     description: 'Sample multi-language website with Prismic CMS & Gatsby.js',
+    siteUrl: `https://${process.env.WEBSITE_HOST_NAME}`
   },
   plugins: [
     {
