@@ -1,0 +1,48 @@
+name: Build and Deploy
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+
+jobs:
+  build-and-deploy:
+    name: Build and deploy Gatsby site
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with: 
+          node-version: '18.x'
+
+      - name: Install Project Dependencies
+        run: npm ci
+
+      - name: Install Gatsby CLI
+        run: npm install -g gatsby-cli
+
+      - name: Set ENV variables
+        run: |
+          echo "PRISMIC_REPO_NAME=${{ secrets.PRISMIC_REPO_NAME }}" > .env.production
+          echo "PRISMIC_CUSTOM_TYPES_API_TOKEN=${{ secrets.PRISMIC_CUSTOM_TYPES_API_TOKEN }}" >> .env.production
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Build
+        run: npm run build
+
+      - name: Verify build
+        run: ls -la public
+
+      - name: Deploy
+        run: npm run deploy
+
+      - name: Invalidate CloudFront
+        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
