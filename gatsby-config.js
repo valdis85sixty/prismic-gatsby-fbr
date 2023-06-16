@@ -54,5 +54,13 @@ module.exports = {
         path: path.resolve(__dirname, 'src', 'images'),
       },
     },
+    {
+      resolve: `gatsby-plugin-s3`,
+      options: {
+        bucketName: process.env.AWS_BUCKET_NAME,
+        protocol: "https",
+        hostname: process.env.WEBSITE_HOST_NAME,
+      },
+    },
   ],
 }
