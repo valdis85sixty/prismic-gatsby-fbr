@@ -1,9 +1,11 @@
 const path = require('path')
 const dotenv = require('dotenv')
 
-dotenv.config()
+dotenv.config({
+  path: `.env.${process.env.NODE_ENV}`,
+})
 
-const prismicConfig = require('./prismic-configuration')
+// const prismicConfig = require('./prismic-configuration')
 
 module.exports = {
   siteMetadata: {
@@ -14,7 +16,7 @@ module.exports = {
     {
       resolve: 'gatsby-source-prismic',
       options: {
-        repositoryName: prismicConfig.prismicRepo,
+        repositoryName: process.env.PRISMIC_REPO_NAME,
         accessToken: process.env.PRISMIC_ACCESS_TOKEN,
         linkResolver: require('./src/utils/linkResolver').linkResolver,
         schemas: {
@@ -27,7 +29,7 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-prismic-previews',
       options: {
-        repositoryName: prismicConfig.prismicRepo,
+        repositoryName: process.env.PRISMIC_REPO_NAME,
         accessToken: process.env.PRISMIC_ACCESS_TOKEN,
       },
     },
@@ -58,8 +60,11 @@ module.exports = {
       resolve: `gatsby-plugin-s3`,
       options: {
         bucketName: process.env.AWS_BUCKET_NAME,
+        region: process.env.AWS_REGION,
         protocol: "https",
         hostname: process.env.WEBSITE_HOST_NAME,
+        acl: null,
+        verbose: true
       },
     },
   ],
