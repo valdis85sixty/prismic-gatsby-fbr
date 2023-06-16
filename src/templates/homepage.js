@@ -4,6 +4,7 @@ import { withPrismicPreview } from 'gatsby-plugin-prismic-previews'
 import { SliceZone } from '@prismicio/react'
 
 import { Layout } from '../components/Layout'
+import { SEO } from '../components/Seo'
 import { components } from '../slices'
 
 const HomepageTemplate = ({ data }) => {
@@ -23,6 +24,7 @@ const HomepageTemplate = ({ data }) => {
 
   return (
     <Layout topMenu={topMenu.data} activeDocMeta={activeDoc}>
+      <SEO />
       <SliceZone slices={homepage.data.body} components={components} />
     </Layout>
   )

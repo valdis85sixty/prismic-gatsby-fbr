@@ -4,6 +4,7 @@ import { withPrismicPreview } from 'gatsby-plugin-prismic-previews'
 import { SliceZone } from '@prismicio/react'
 
 import { Layout } from '../components/Layout'
+import { SEO } from '../components/Seo'
 import { components } from '../slices'
 
 const PageTemplate = ({ data }) => {
@@ -21,9 +22,15 @@ const PageTemplate = ({ data }) => {
     alternateLanguages,
   }
   const topMenu = data.prismicTopMenu || {}
+  const seo = {
+    title: page.display_title.text,
+    pathname: url,
+    description: page.seo_description
+  }
 
   return (
     <Layout topMenu={topMenu.data} activeDocMeta={activeDoc}>
+      <SEO {...seo} />
       <SliceZone slices={page.body} components={components} />
     </Layout>
   )
@@ -45,6 +52,10 @@ export const query = graphql`
         uid
       }
       data {
+        display_title {
+          text
+        }
+        seo_description
         body {
           ... on PrismicSliceType {
             id
