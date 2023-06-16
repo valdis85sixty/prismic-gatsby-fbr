@@ -36,7 +36,8 @@
     "start": "npm run clean && npm run develop",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
-    "start:prod": "npm run clean && npm run build && npm run serve"
+    "start:prod": "npm run clean && npm run build && npm run serve",
+    "deploy": "gatsby-plugin-s3 deploy"
   },
   "repository": {
     "type": "git",
